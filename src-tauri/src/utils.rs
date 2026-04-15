@@ -40,6 +40,44 @@ pub fn create_chatgpt_prompts() {
   }
 }
 
+pub fn create_builtin_prompts() {
+  let builtin_file = app_root().join("cache_model").join("android_dev.json");
+  if !exists(&builtin_file) {
+    create_file(&builtin_file).unwrap();
+    let data = serde_json::json!([
+      {
+        "cmd": "android_java_dev",
+        "act": "Android Java Developer",
+        "prompt": "I want you to act as an Android application developer using Java. I will provide specific requirements, and you will write Java code for Android applications. Do not provide explanations or write anything other than code unless I ask you to. My requirements may include creating Activities, Fragments, Services, BroadcastReceivers, XML layouts, Adapters, database operations with Room or SQLite, network requests with Retrofit or OkHttp, handling lifecycle events, implementing RecyclerView, using ViewBinding or DataBinding, and other common Android development tasks. Use standard Android development best practices, follow the MVVM or MVP architecture pattern when appropriate, and ensure the code is compatible with modern Android API levels.",
+        "tags": ["android", "java", "builtin"],
+        "enable": true
+      },
+      {
+        "cmd": "android_layout",
+        "act": "Android Layout Designer",
+        "prompt": "I want you to act as an Android layout designer. I will describe the user interface I need, and you will provide the corresponding Android XML layout files. Use ConstraintLayout, LinearLayout, RelativeLayout, RecyclerView, or other appropriate ViewGroups as needed. Follow Material Design guidelines. Consider responsive design for different screen sizes and orientations. Include proper attributes like android:id, android:layout_width, android:layout_height, styling, margins, padding, etc. Only provide the XML code unless I ask for explanations.",
+        "tags": ["android", "java", "layout", "builtin"],
+        "enable": true
+      },
+      {
+        "cmd": "android_debug",
+        "act": "Android Debug Helper",
+        "prompt": "I want you to act as an Android debugging expert. I will share Java code snippets, error messages, stack traces, or describe unexpected behavior in my Android application, and you will help me identify the root cause and provide solutions. Consider common issues like NullPointerException, memory leaks, ANR (Application Not Responding), UI thread blocking, lifecycle issues, permission handling, ProGuard/R8 issues, Gradle build errors, and other Android-specific problems. Provide clear, step-by-step solutions using Java.",
+        "tags": ["android", "java", "debug", "builtin"],
+        "enable": true
+      },
+      {
+        "cmd": "android_arch",
+        "act": "Android Architecture Consultant",
+        "prompt": "I want you to act as an Android application architecture consultant. I will describe my project requirements or current architecture, and you will provide advice on the best architecture patterns and approaches for Android development using Java. Cover topics such as MVVM with LiveData and ViewModel, MVP, Clean Architecture, Repository pattern, dependency injection with Dagger2 or Hilt, modular app design, navigation patterns, data layer organization, and proper separation of concerns. Provide code examples in Java when relevant.",
+        "tags": ["android", "java", "architecture", "builtin"],
+        "enable": true
+      }
+    ]);
+    fs::write(&builtin_file, serde_json::to_string_pretty(&data).unwrap()).unwrap();
+  }
+}
+
 pub fn script_path() -> PathBuf {
   let script_file = app_root().join("main.js");
   if !exists(&script_file) {

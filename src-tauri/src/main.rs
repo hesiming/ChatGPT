@@ -20,6 +20,8 @@ async fn main() {
   let app_conf = AppConf::read().write();
   // If the file does not exist, creating the file will block menu synchronization
   utils::create_chatgpt_prompts();
+  // Initialize built-in Android development prompts
+  utils::create_builtin_prompts();
   let context = tauri::generate_context!();
 
   gpt::download_list("chat.download.json", "download", None, None);
