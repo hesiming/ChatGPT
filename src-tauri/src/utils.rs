@@ -43,7 +43,7 @@ pub fn create_chatgpt_prompts() {
 pub fn create_builtin_prompts() {
   let builtin_file = app_root().join("cache_model").join("android_dev.json");
   if !exists(&builtin_file) {
-    create_file(&builtin_file).unwrap();
+    create_file(&builtin_file).expect("Failed to create builtin prompts file");
     let data = serde_json::json!([
       {
         "cmd": "android_java_dev",
@@ -74,7 +74,11 @@ pub fn create_builtin_prompts() {
         "enable": true
       }
     ]);
-    fs::write(&builtin_file, serde_json::to_string_pretty(&data).unwrap()).unwrap();
+    fs::write(
+      &builtin_file,
+      serde_json::to_string_pretty(&data).expect("Failed to serialize builtin prompts"),
+    )
+    .expect("Failed to write builtin prompts file");
   }
 }
 
